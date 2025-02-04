@@ -37,7 +37,7 @@
       use icepack_parameters, only: skl_bgc, z_tracers, hi_min
       use icepack_parameters, only: kcatbound, kitd, saltflux_option, snwgrain, snwredist
       use icepack_therm_shared, only: Tmin
-      use icepack_warnings,   only: warnstr, icepack_warnings_add
+      use icepack_warnings,   only: warnstr, icepack_warnings_add, warnstr_drv
       use icepack_warnings,   only: icepack_warnings_setabort, icepack_warnings_aborted
       use icepack_zbgc_shared,only: zap_small_bgc
 
@@ -508,7 +508,7 @@
                    daice(n) <= -puny*aicen(nd)) then
                   write(warnstr,*) ' '
                   call icepack_warnings_add(warnstr)
-                  write(warnstr,*) subname, 'shift_ice: negative daice'
+                  write(warnstr,*) subname, 'shift_ice: negative daice', trim(warnstr_drv)
                   call icepack_warnings_add(warnstr)
                   write(warnstr,*) subname, 'boundary, donor cat:', n, nd
                   call icepack_warnings_add(warnstr)
@@ -527,7 +527,7 @@
                    dvice(n) <= -puny*vicen(nd)) then
                   write(warnstr,*) ' '
                   call icepack_warnings_add(warnstr)
-                  write(warnstr,*) subname, 'shift_ice: negative dvice'
+                  write(warnstr,*) subname, 'shift_ice: negative dvice', trim(warnstr_drv)
                   call icepack_warnings_add(warnstr)
                   write(warnstr,*) subname, 'boundary, donor cat:', n, nd
                   call icepack_warnings_add(warnstr)
@@ -547,7 +547,7 @@
                   if (daice(n) >= aicen(nd)*(c1+puny)) then
                      write(warnstr,*) ' '
                      call icepack_warnings_add(warnstr)
-                     write(warnstr,*) subname, 'shift_ice: daice > aicen'
+                     write(warnstr,*) subname, 'shift_ice: daice > aicen', trim(warnstr_drv)
                      call icepack_warnings_add(warnstr)
                      write(warnstr,*) subname, 'boundary, donor cat:', n, nd
                      call icepack_warnings_add(warnstr)
@@ -568,7 +568,7 @@
                   if (dvice(n) >= vicen(nd)*(c1+puny)) then
                      write(warnstr,*) ' '
                      call icepack_warnings_add(warnstr)
-                     write(warnstr,*) subname, 'shift_ice: dvice > vicen'
+                     write(warnstr,*) subname, 'shift_ice: dvice > vicen', trim(warnstr_drv)
                      call icepack_warnings_add(warnstr)
                      write(warnstr,*) subname, 'boundary, donor cat:', n, nd
                      call icepack_warnings_add(warnstr)
@@ -723,7 +723,7 @@
          call icepack_warnings_setabort(.true.,__FILE__,__LINE__)
          write(warnstr,*) ' '
          call icepack_warnings_add(warnstr)
-         write(warnstr,*) subname, 'Conservation error: ', trim(fieldid)
+         write(warnstr,*) subname, 'Conservation error: ', trim(fieldid), trim(warnstr_drv)
          call icepack_warnings_add(warnstr)
          write(warnstr,*) subname, '  Initial value = ', x1
          call icepack_warnings_add(warnstr)
@@ -883,7 +883,7 @@
       if (llimit_aice) then  ! check for aice out of bounds
          if (aice > c1+puny .or. aice < -puny) then
             call icepack_warnings_setabort(.true.,__FILE__,__LINE__)
-            call icepack_warnings_add(subname//' aggregate ice area out of bounds')
+            call icepack_warnings_add(subname//' aggregate ice area out of bounds'//trim(warnstr_drv))
             write(warnstr,*) subname, 'aice:', aice
             call icepack_warnings_add(warnstr)
             do n = 1, ncat
@@ -1207,7 +1207,7 @@
 
       if (aice > (c1+puny)) then
          call icepack_warnings_setabort(.true.,__FILE__,__LINE__)
-         call icepack_warnings_add(subname//' Zap ice: excess ice area')
+         call icepack_warnings_add(subname//' Zap ice: excess ice area'//trim(warnstr_drv))
          return
       elseif (aice > c1 .and. aice < (c1+puny)) then
 
@@ -1512,7 +1512,7 @@
             ! check for zapping
             if (zTsn < Tmin .or. zTsn > Tmax) then
                l_zap = .true.
-               write(warnstr,*) subname, "zap_snow_temperature: temperature out of bounds!"
+               write(warnstr,*) subname, "zap_snow_temperature: temperature out of bounds!", trim(warnstr_drv)
                call icepack_warnings_add(warnstr)
                write(warnstr,*) subname, "k:"   , k
                call icepack_warnings_add(warnstr)
