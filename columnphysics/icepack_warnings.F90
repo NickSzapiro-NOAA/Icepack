@@ -29,6 +29,7 @@ module icepack_warnings
 
       ! public string for all subroutines to use
       character(len=char_len_long), public :: warnstr
+      character(len=char_len_long), public :: warnstr_drv = ""
 
       public :: &
         icepack_warnings_clear,    &
@@ -44,7 +45,7 @@ module icepack_warnings
 
 ! variables are shared by default
 ! have warnstr be private
-!$OMP THREADPRIVATE(warnstr)
+!$OMP THREADPRIVATE(warnstr, warnstr_drv)
 
 !=======================================================================
 
